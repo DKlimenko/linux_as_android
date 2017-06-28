@@ -67,7 +67,7 @@ static char success = 0;
 
 int main (int argc, char *argv[]){
 	if(init() < 0)
-		return;
+		return 1;
 	//doTransfer();
 	if(setupAccessory(
 		"Manufacturer",
@@ -169,12 +169,12 @@ static int setupAccessory(
 	response = libusb_control_transfer(handle,0x40,52,0,5,(char*)serialNumber,strlen(serialNumber)+1,0);
 	if(response < 0){error(response);return -1;}
 
-	fprintf(stdout,"Accessory Identification sent\n", devVersion);
+	fprintf(stdout,"Accessory Identification sent %d\n", devVersion);
 
 	response = libusb_control_transfer(handle,0x40,53,0,0,NULL,0,0);
 	if(response < 0){error(response);return -1;}
 
-	fprintf(stdout,"Attempted to put device into accessory mode\n", devVersion);
+	fprintf(stdout,"Attempted to put device into accessory mode %d\n", devVersion);
 
 	if(handle != NULL)
 		libusb_release_interface (handle, 0);
